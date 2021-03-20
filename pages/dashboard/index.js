@@ -15,6 +15,7 @@ import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import * as util from "../../components/utility/client";
+import * as test from "../../components/utility/testdata";
 import Layout from "../../components/common/layout";
 import SigninRequired from "../../components/common/signin-required";
 import GuildDropdown from "../../components/common/guild-dropdown";

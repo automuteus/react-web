@@ -13,16 +13,21 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExternalLinkAlt,
+  faGem,
   faGift,
   faGrinHearts,
   faLink,
   faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { commands } from "../components/data/commands";
+import {
+  commands,
+  settings,
+  premiumSettings,
+} from "../components/data/commands";
 import Link from "next/link";
 
-export default class ErrorPage extends React.Component {
+export default class CommandsPage extends React.Component {
   render() {
     return (
       <Layout
@@ -35,7 +40,7 @@ export default class ErrorPage extends React.Component {
         <Container size="lg">
           <div>
             <h1 className="d-flex flex-row justify-content-between align-items-center">
-              AutoMuteUs Commands
+              AutoMuteUs Command Reference
               <Button
                 href="https://github.com/denverquane/automuteus#commands"
                 target="_blank"
@@ -50,14 +55,23 @@ export default class ErrorPage extends React.Component {
                 GitHub Reference
               </Button>
             </h1>
+
+            <hr />
+
+            <h2 id="commands-list">Commands</h2>
           </div>
-          <div style={{ fontSize: "1.1rem" }}>
+          <div>
             <Alert variant="dark">
-              The Discord Bot uses the <code>.au</code> prefix for any commands
-              by default; if you change your prefix remember to replace{" "}
-              <code>.au</code> with your custom prefix. If you forget your
-              prefix, you can @mention the bot and it will respond with whatever
-              it's prefix currently is.
+              <p>
+                The Discord Bot uses the <code>.au</code> prefix for any
+                commands by default; if you change your prefix remember to
+                replace <code>.au</code> with your custom prefix. If you forget
+                your prefix, you can @mention the bot and it will respond with
+                whatever it's prefix currently is.
+              </p>
+              <p className="mb-0">
+                Click on a command to expand more details about it.
+              </p>
             </Alert>
             <hr />
             {commands
@@ -77,6 +91,42 @@ export default class ErrorPage extends React.Component {
                 />
               ))}
           </div>
+
+          <hr />
+
+          <div>
+            <h2 id="settings-list">Settings</h2>
+            <Alert variant="dark">
+              <p>
+                Available configurable settings for the bot and how it displays
+                your data. Access is controlled by appropriate settings listed.
+              </p>
+              <p className="mb-0">
+                Click on a setting to expand more details about it. Entries
+                listed with a{" "}
+                <FontAwesomeIcon className="text-premium" icon={faGem} /> are
+                for premium AutoMuteUs users only.
+              </p>
+            </Alert>
+            <hr />
+            {[...settings, ...premiumSettings]
+              .sort((a, b) => (a.command > b.command ? 1 : -1))
+              .map((cmd) => (
+                <CommandEntry
+                  command={cmd.command}
+                  alias={cmd.alias}
+                  description={cmd.description}
+                  arguments={cmd.arguments}
+                  example={cmd.example}
+                  image={cmd.image}
+                  isPremium={cmd?.isPremium ?? false}
+                  key={`cmd-${cmd.command
+                    .replace(".", "")
+                    .split(" ")
+                    .join("_")}`}
+                />
+              ))}
+          </div>
         </Container>
       </Layout>
     );
@@ -85,7 +135,7 @@ export default class ErrorPage extends React.Component {
 
 function CommandEntry(props) {
   const command = props;
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [imgOpen, setImgOpen] = useState(!command.image);
 
   const req_args = command.arguments.filter((c) => c.level == "required");
@@ -105,6 +155,20 @@ function CommandEntry(props) {
         aria-expanded={open}
       >
         <code>{command.command}</code>
+        <FontAwesomeIcon
+          icon={faGem}
+          className={`mx-2 text-premium ${command.isPremium ? "d-inline-block" : "d-none"}`}
+          style={{ fontSize: "1.1rem" }}
+        />
+        <span
+          className={`command-description-inline ${
+            open ? "d-none" : "d-inline-block"
+          }`}
+        >
+          {command.description.map((e, i) => (
+            <span key={i}>{e}</span>
+          ))}
+        </span>
       </h2>
 
       <Collapse in={open}>
@@ -114,7 +178,7 @@ function CommandEntry(props) {
           className="command-content"
         >
           <h5>Description</h5>
-          <div style={{ fontSize: "1.1rem" }} className="mb-4">
+          <div className="mb-4">
             {command.description.map((e, i) => (
               <span key={i}>{e}</span>
             ))}
