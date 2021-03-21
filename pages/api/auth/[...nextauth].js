@@ -53,7 +53,7 @@ const options = {
   callbacks: {
     jwt: async (token, user, account, profile, isNewUser) => {
       if (account && user) {
-        const uid = isNewUser ? user.id : user.userId;
+        const uid = user.id ?? user.userId;
         const ext = ".png"; // Eventually check if an animated image exists and use .gif
 
         let img = profile.avatar
@@ -76,6 +76,7 @@ const options = {
           await util.updateGuilds(prisma, uid, guilds);
         }
       }
+      console.log("all", token, user, account, profile, isNewUser);
 
       return Promise.resolve(token);
     },
