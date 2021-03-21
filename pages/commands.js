@@ -41,7 +41,7 @@ import {
   premiumSettings,
 } from "../components/data/commands";
 
-export default class ErrorPage extends React.Component {
+export default class CommandsPage extends React.Component {
   render() {
     return (
       <Layout
@@ -54,7 +54,7 @@ export default class ErrorPage extends React.Component {
         <Container size="lg">
           <div>
             <h1 className="d-flex flex-row justify-content-between align-items-center">
-              AutoMuteUs Commands
+              AutoMuteUs Command Reference
               <Button
                 href="https://github.com/denverquane/automuteus#commands"
                 target="_blank"
@@ -69,14 +69,23 @@ export default class ErrorPage extends React.Component {
                 GitHub Reference
               </Button>
             </h1>
+
+            <hr />
+
+            <h2 id="commands-list">Commands</h2>
           </div>
-          <div style={{ fontSize: "1.1rem" }}>
+          <div>
             <Alert variant="dark">
-              The Discord Bot uses the <code>.au</code> prefix for any commands
-              by default; if you change your prefix remember to replace{" "}
-              <code>.au</code> with your custom prefix. If you forget your
-              prefix, you can @mention the bot and it will respond with whatever
-              it's prefix currently is.
+              <p>
+                The Discord Bot uses the <code>.au</code> prefix for any
+                commands by default; if you change your prefix remember to
+                replace <code>.au</code> with your custom prefix. If you forget
+                your prefix, you can @mention the bot and it will respond with
+                whatever it's prefix currently is.
+              </p>
+              <p className="mb-0">
+                Click on a command to expand more details about it.
+              </p>
             </Alert>
             <hr />
             {commands
@@ -202,7 +211,7 @@ function CommandEntry(props) {
           className="command-content"
         >
           <h5>Description</h5>
-          <div style={{ fontSize: "1.1rem" }} className="mb-4">
+          <div className="mb-4">
             {command.description.map((e, i) => (
               <span key={i}>{e}</span>
             ))}

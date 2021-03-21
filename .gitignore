@@ -108,3 +108,4 @@ client/build
 api/build
 package-lock.json
 prisma/src/
+*.bak
